@@ -5,14 +5,16 @@ input.onButtonPressed(Button.A, function () {
 })
 function repeatSequence () {
     for (let nextSavedGeneratedButton of sequence_generated) {
-        basic.showString("" + (nextSavedGeneratedButton))
         if (nextSavedGeneratedButton == "A") {
             music.playTone(330, music.beat(BeatFraction.Whole))
         } else if (nextSavedGeneratedButton == "B") {
             music.playTone(262, music.beat(BeatFraction.Whole))
         } else if (nextSavedGeneratedButton == "C") {
             music.playTone(440, music.beat(BeatFraction.Whole))
+        } else if (nextSavedGeneratedButton == "D") {
+            music.playTone(165, music.beat(BeatFraction.Whole))
         }
+        basic.showString("" + (nextSavedGeneratedButton))
         basic.showLeds(`
             . . . . .
             . . . . .
@@ -20,9 +22,10 @@ function repeatSequence () {
             . . . . .
             . . . . .
             `)
+        basic.pause(500)
     }
-    newGeneratedButton = randint(0, 2)
-    buttonArray = ["A", "B", "C"]
+    newGeneratedButton = randint(0, 3)
+    buttonArray = ["A", "B", "C", "D"]
     sequence_generated.push(buttonArray[newGeneratedButton])
     basic.showString("" + (buttonArray[newGeneratedButton]))
     if (buttonArray[newGeneratedButton] == "A") {
@@ -31,6 +34,8 @@ function repeatSequence () {
         music.playTone(262, music.beat(BeatFraction.Whole))
     } else if (buttonArray[newGeneratedButton] == "C") {
         music.playTone(440, music.beat(BeatFraction.Whole))
+    } else if (buttonArray[newGeneratedButton] == "D") {
+        music.playTone(165, music.beat(BeatFraction.Whole))
     }
     basic.pause(500)
     basic.showLeds(`
@@ -45,6 +50,11 @@ function repeatSequence () {
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     sequence_human.push("C")
     music.playTone(440, music.beat(BeatFraction.Whole))
+    compareHumanInput()
+})
+input.onButtonPressed(Button.AB, function () {
+    sequence_human.push("D")
+    music.playTone(165, music.beat(BeatFraction.Whole))
     compareHumanInput()
 })
 function compareHumanInput () {
@@ -69,7 +79,13 @@ function compareHumanInput () {
                     # # # . .
                     . # . . .
                     `)
-                basic.pause(1000)
+                basic.pause(500)
+                if (sequence_generated.length % 5 == 0) {
+                    game.addScore(10)
+                } else {
+                    game.addScore(1)
+                }
+                basic.pause(500)
                 repeatSequence()
             }
         }
