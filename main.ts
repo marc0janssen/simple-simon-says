@@ -1,35 +1,7 @@
-function vergelijkHumanInput () {
-    if (sequence_human.length != 0) {
-        for (let indexSavedHumanButton = 0; indexSavedHumanButton <= sequence_human.length - 1; indexSavedHumanButton++) {
-            if (sequence_generated[indexSavedHumanButton] != sequence_human[indexSavedHumanButton]) {
-                basic.showLeds(`
-                    . # # # .
-                    # . # . #
-                    # # # # #
-                    . # # # .
-                    . # # # .
-                    `)
-                music.playMelody("D C D E C D E D ", 120)
-                game.gameOver()
-            } else if (sequence_generated.length == sequence_human.length && sequence_human.length - 1 == indexSavedHumanButton) {
-                sequence_human = []
-                basic.showLeds(`
-                    . . . . .
-                    . . . . #
-                    . . . # .
-                    # . # . .
-                    . # . . .
-                    `)
-                basic.pause(1000)
-                repeatSequence()
-            }
-        }
-    }
-}
 input.onButtonPressed(Button.A, function () {
     sequence_human.push("A")
     music.playTone(330, music.beat(BeatFraction.Whole))
-    vergelijkHumanInput()
+    compareHumanInput()
 })
 function repeatSequence () {
     for (let nextSavedGeneratedButton of sequence_generated) {
@@ -73,12 +45,40 @@ function repeatSequence () {
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     sequence_human.push("C")
     music.playTone(440, music.beat(BeatFraction.Whole))
-    vergelijkHumanInput()
+    compareHumanInput()
 })
+function compareHumanInput () {
+    if (sequence_human.length != 0) {
+        for (let indexSavedHumanButton = 0; indexSavedHumanButton <= sequence_human.length - 1; indexSavedHumanButton++) {
+            if (sequence_generated[indexSavedHumanButton] != sequence_human[indexSavedHumanButton]) {
+                basic.showLeds(`
+                    . # # # .
+                    # . # . #
+                    # # # # #
+                    . # # # .
+                    . # # # .
+                    `)
+                music.playMelody("D C D E C D E D ", 120)
+                game.gameOver()
+            } else if (sequence_generated.length == sequence_human.length && sequence_human.length - 1 == indexSavedHumanButton) {
+                sequence_human = []
+                basic.showLeds(`
+                    . . . . #
+                    . . . # #
+                    # . # # .
+                    # # # . .
+                    . # . . .
+                    `)
+                basic.pause(1000)
+                repeatSequence()
+            }
+        }
+    }
+}
 input.onButtonPressed(Button.B, function () {
     sequence_human.push("B")
     music.playTone(262, music.beat(BeatFraction.Whole))
-    vergelijkHumanInput()
+    compareHumanInput()
 })
 let buttonArray: string[] = []
 let newGeneratedButton = 0
