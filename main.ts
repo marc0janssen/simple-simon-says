@@ -105,6 +105,7 @@ let baseTimer = 0
 let isTimerActive = false
 let sequence_human: string[] = []
 let sequence_generated: string[] = []
+basic.showString("Start")
 sequence_generated = []
 sequence_human = []
 let timerLimit = 5000
