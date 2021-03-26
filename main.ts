@@ -58,6 +58,7 @@ input.onButtonPressed(Button.AB, function () {
     compareHumanInput()
 })
 function compareHumanInput () {
+    isTimerActive = false
     if (sequence_human.length != 0) {
         for (let indexSavedHumanButton = 0; indexSavedHumanButton <= sequence_human.length - 1; indexSavedHumanButton++) {
             if (sequence_generated[indexSavedHumanButton] != sequence_human[indexSavedHumanButton]) {
@@ -80,8 +81,8 @@ function compareHumanInput () {
                     . # . . .
                     `)
                 basic.pause(500)
-                if (sequence_generated.length % 5 == 0) {
-                    game.addScore(10)
+                if (sequence_generated.length % 4 == 0) {
+                    game.addScore(sequence_generated.length / 4 * 10)
                 } else {
                     game.addScore(1)
                 }
@@ -90,6 +91,8 @@ function compareHumanInput () {
             }
         }
     }
+    baseTimer = input.runningTime()
+    isTimerActive = true
 }
 input.onButtonPressed(Button.B, function () {
     sequence_human.push("B")
@@ -98,11 +101,21 @@ input.onButtonPressed(Button.B, function () {
 })
 let buttonArray: string[] = []
 let newGeneratedButton = 0
+let baseTimer = 0
+let isTimerActive = false
 let sequence_human: string[] = []
 let sequence_generated: string[] = []
 sequence_generated = []
 sequence_human = []
+let timerLimit = 5000
+isTimerActive = false
 repeatSequence()
+isTimerActive = true
+baseTimer = input.runningTime()
 basic.forever(function () {
-	
+    if (isTimerActive) {
+        if (input.runningTime() - baseTimer > timerLimit) {
+            game.gameOver()
+        }
+    }
 })
