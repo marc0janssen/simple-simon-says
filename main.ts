@@ -57,20 +57,23 @@ input.onButtonPressed(Button.AB, function () {
     music.playTone(165, music.beat(BeatFraction.Whole))
     compareHumanInput()
 })
+function gameOver () {
+    basic.showLeds(`
+        . # # # .
+        # . # . #
+        # # # # #
+        . # # # .
+        . # # # .
+        `)
+    music.playMelody("D C D E C D E D ", 120)
+    game.gameOver()
+}
 function compareHumanInput () {
     isTimerActive = false
     if (sequence_human.length != 0) {
         for (let indexSavedHumanButton = 0; indexSavedHumanButton <= sequence_human.length - 1; indexSavedHumanButton++) {
             if (sequence_generated[indexSavedHumanButton] != sequence_human[indexSavedHumanButton]) {
-                basic.showLeds(`
-                    . # # # .
-                    # . # . #
-                    # # # # #
-                    . # # # .
-                    . # # # .
-                    `)
-                music.playMelody("D C D E C D E D ", 120)
-                game.gameOver()
+                gameOver()
             } else if (sequence_generated.length == sequence_human.length && sequence_human.length - 1 == indexSavedHumanButton) {
                 sequence_human = []
                 basic.showLeds(`
@@ -115,6 +118,6 @@ isTimerActive = true
 baseTimer = input.runningTime()
 basic.forever(function () {
     if (isTimerActive && input.runningTime() - baseTimer > timerLimit) {
-        game.gameOver()
+        gameOver()
     }
 })
