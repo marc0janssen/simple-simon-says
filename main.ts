@@ -113,9 +113,7 @@ repeatSequence()
 isTimerActive = true
 baseTimer = input.runningTime()
 basic.forever(function () {
-    if (isTimerActive) {
-        if (input.runningTime() - baseTimer > timerLimit) {
-            game.gameOver()
-        }
+    if (isTimerActive && input.runningTime() - baseTimer > timerLimit) {
+        game.gameOver()
     }
 })
